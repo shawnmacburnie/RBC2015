@@ -4,7 +4,7 @@
 
 Nodejs: https://nodejs.org/en/download/
 
-bower-cli: npm i -g bower
+bower-cli: `npm i -g bower`
 
 I think that is it but there may be more, let me know if you run into errors.
 
