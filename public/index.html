@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Basic Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/lib/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
+  </head>
+  <body>
+      <div class="container">
+          <div class="row">
+              <div class="col-md-6">
+                  <h3>Snapshot</h3>
+                  <form>
+                      <div class="form-group">
+                          <label for="snapSymbol">Symbol</label>
+                          <input class="form-control" type="text" id="snapSymbol" placeholder="Symbol">
+                      </div>
+                      <button class="btn btn-default" id="snapSubmitButton">Search</button>
+                  </form>
+              </div>
+              <div class="col-md-6">
+                  <h3>Historical Data</h3>
+                  <form>
+                      <div class="form-group">
+                          <label for="histSymbol">Symbol</label>
+                          <input class="form-control" type="text" id="histSymbol" placeholder="Symbol">
+                      </div>
+                      <div class="form-group">
+                          <label for="histStartDate">Start Date</label>
+                          <div class='input-group date' id='histStartDate'>
+                                <input type='text' class="form-control" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label for="histEndDate">End Date</label>
+                          <div class='input-group date' id='histEndDate'>
+                                <input type='text' class="form-control" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label for="">Time Interval: </label>
+                          <div class="btn-group" role="group" aria-label="...">
+                              <button type="button" class="btn btn-default">daily</button>
+                              <button type="button" class="btn btn-default">weekly</button>
+                              <button type="button" class="btn btn-default">monthly</button>
+                          </div>
+
+                      </div>
+                      <button class="btn btn-default" id="histSubmitButton">Search</button>
+                  </form>
+              </div>
+          </div>
+          <h2 id="resultsHeader"></h2>
+          <div class="row" id="dataLocation">
+
+          </div>
+      </div>
+    <!-- Libraries -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/lib/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+    <script>
+        $.fn.datepicker.defaults.format = 'yyyy-mm-dd';
+        $('#histEndDate').datepicker({});
+        $('#histStartDate').datepicker();
+        var period = 'd';
+        var buttons = $('.btn-group > button.btn');
+
+        function updateButtons() {
+            for (var i = 0; i < buttons.length;i++) {
+                var button = $(buttons[i]);
+                if (button.text()[0] !== period) {
+                    button.removeClass('btn-primary');
+                    button.addClass('btn-default');
+                } else {
+                    button.removeClass('btn-default');
+                    button.addClass('btn-primary');
+                }
+            }
+        }
+        updateButtons();
+
+        buttons.on('click', function() {
+            period = this.innerHTML[0];
+            updateButtons();
+        });
+
+
+        var socket = io();
+        $('#snapSubmitButton').click(function(e){
+            e.preventDefault();
+            var symbol = $('#snapSymbol').val();
+            socket.emit('postSnapYahoo', symbol);
+        });
+        $('#histSubmitButton').click(function(e){
+            e.preventDefault();
+            var query = {
+                symbol: $('#histSymbol').val(),
+                from: $('#histStartDate input').val(),
+                to: $('#histEndDate input').val()
+            };
+            if (period) {
+                query.period = period;
+            }
+            socket.emit('postHistYahoo', query);
+        });
+
+        socket.on('newYahoo', function(data) {
+            var resultsHeader = $('#resultsHeader');
+            if(!resultsHeader.text()) resultsHeader.text('Results')
+            $('#dataLocation').append('<pre><code>' + JSON.stringify(data, null, 2) + '</code></pre>');
+        });
+
+
+
+    </script>
+  </body>
+</html>
