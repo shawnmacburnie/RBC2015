@@ -4,7 +4,7 @@ require('expose?$!expose?jQuery!jquery');
 require("bootstrap-webpack");
 require('bootstrap-datepicker/dist/js/bootstrap-datepicker');
 
-import Layout from './view/layout';
+import Layout from 'src/view/layout';
 import React from 'react';
 import ReactDOM from 'react-dom';
 

@@ -1,4 +1,5 @@
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var path = require('path');
 
 module.exports = {
     entry: './src/app.js',
@@ -9,9 +10,9 @@ module.exports = {
     },
     resolve: {
         extensions: ['', '.js', '.jsx'],
-        alias: {
-            src: './src'
-        }
+        root: [
+            path.resolve('./')
+        ]
     },
     module: {
         loaders: [
