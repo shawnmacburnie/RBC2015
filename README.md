@@ -4,7 +4,7 @@
 
 Nodejs: https://nodejs.org/en/download/
 
-bower-cli: `npm i -g webpack`
+webpack: `npm i -g webpack`
 
 babel-cli: `npm i -g babel-cli`
 
