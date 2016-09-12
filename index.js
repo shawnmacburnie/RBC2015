@@ -9,11 +9,11 @@ const http = HTTP.Server(app);
 const io = SocketIO(http);
 
 app.use(bodyParser.json());
-app.use(express.static('target'));
+app.use(express.static('www'));
 
 //Defines a route at localhost:3000/
 app.get('/', function(req,res) {
-    res.sendFile(__dirname + '/target/index.html');
+    res.sendFile(__dirname + '/www/index.html');
 });
 
 app.get('/api/snapshot', function(req,res) {
