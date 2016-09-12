@@ -1,4 +1,5 @@
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var webpack = require('webpack');
 var path = require('path');
 
 module.exports = {
@@ -24,9 +25,8 @@ module.exports = {
         ]
     },
     plugins: [
-        new CopyWebpackPlugin([{
-            from: 'public',
-            to: '.'
-        }])
+        new CopyWebpackPlugin([{from: 'public'}]),
+        new webpack.optimize.DedupePlugin()
+
     ]
 };
