@@ -5,7 +5,7 @@ var path = require('path');
 module.exports = {
     entry: './src/app.js',
     output: {
-        path: './target',
+        path: './www',
         publicPath: '/',
         filename: './js/bundle.js'
     },
@@ -25,7 +25,7 @@ module.exports = {
         ]
     },
     plugins: [
-        new CopyWebpackPlugin([{from: 'public'}]),
+        new CopyWebpackPlugin([{from: 'template'}]),
         new webpack.optimize.DedupePlugin()
 
     ]
