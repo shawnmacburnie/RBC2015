@@ -4,8 +4,8 @@ import $ from 'jquery';
 import io from 'socket.io-client';
 import React from 'react';
 
-const Layout = React.createClass({
-    componentDidMount: function() {
+class Layout extends React.Component {
+    componentDidMount() {
         $.fn.datepicker.defaults.format = 'yyyy-mm-dd';
         $('#histEndDate').datepicker({});
         $('#histStartDate').datepicker();
@@ -56,9 +56,9 @@ const Layout = React.createClass({
             if(!resultsHeader.text()) resultsHeader.text('Results')
             $('#dataLocation').append('<pre><code>' + JSON.stringify(data, null, 2) + '</code></pre>');
         });
-    },
+    }
 
-    render: function() {
+    render() {
         return (
     <div className="container">
         <div className="row">
@@ -114,6 +114,6 @@ const Layout = React.createClass({
         <div className="row" id="dataLocation" />
     </div>);
     }
-});
+}
 
 export default Layout;
